@@ -17,8 +17,11 @@
 # [START imports]
 import os
 import urllib
+import datetime
 
 from google.appengine.api import users
+from google.appengine.api import urlfetch
+from google.appengine.api import memcache
 from google.appengine.ext import ndb
 
 import jinja2
@@ -85,6 +88,7 @@ class MainPage(webapp2.RequestHandler):
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
             'url_linktext': url_linktext,
+            'lasttime' : memcache.get('lasttime')
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -110,8 +114,9 @@ class Guestbook(webapp2.RequestHandler):
                     identity=users.get_current_user().user_id(),
                     email=users.get_current_user().email())
 
-        greeting.content = self.request.get('content')
+        greeting.content = str(urlfetch.fetch(self.request.get('content')).content[:100])
         greeting.put()
+        memcache.set('lasttime', str(datetime.datetime.now()))
 
         query_params = {'guestbook_name': guestbook_name}
         self.redirect('/?' + urllib.urlencode(query_params))
