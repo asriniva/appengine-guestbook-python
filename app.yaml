@@ -1,6 +1,6 @@
-runtime: python27
-api_version: 1
-threadsafe: true
+runtime: python38
+runtime_channel: canary
+service: guestbook3
 
 # [START handlers]
 handlers:
@@ -12,13 +12,6 @@ handlers:
   static_dir: bootstrap
 
 - url: /.*
-  script: guestbook.app
+  script: auto
 # [END handlers]
 
-# [START libraries]
-libraries:
-- name: webapp2
-  version: latest
-- name: jinja2
-  version: latest
-# [END libraries]

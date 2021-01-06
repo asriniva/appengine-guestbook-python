@@ -1,0 +1,3 @@
+flask
+git+git://github.com/googlecloudplatform/appengine-python-standard.git@main#egg=appengine-python-standard
+jinja2
