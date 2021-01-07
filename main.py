@@ -74,7 +74,9 @@ def get():
     # API calls to the wormhole.
     os.environ['APPLICATION_ID'] = os.environ['GAE_APPLICATION']
     os.environ['HTTP_X_APPENGINE_API_TICKET'] = flask.request.headers['X-Appengine-Api-Ticket']
-    os.environ['AUTH_DOMAIN'] = 'gmail.com'#flask.request.headers['X-Appengine-Auth-Domain']
+    os.environ['AUTH_DOMAIN'] = flask.request.environ.get('HTTP_X_APPENGINE_AUTH_DOMAIN', 'gmail.com')
+    os.environ['USER_ID'] = flask.request.environ.get('HTTP_X_APPENGINE_USER_ID', '')
+    os.environ['USER_EMAIL'] = flask.request.environ.get('HTTP_X_APPENGINE_USER_EMAIL', '')
     vmstub.VMStub.SetUseRequestSecurityTicketForThread(True)
     stub = vmstub.VMStub()
     vmstub.Register(stub)
@@ -111,7 +113,9 @@ def post():
     # API calls to the wormhole.
     os.environ['APPLICATION_ID'] = os.environ['GAE_APPLICATION']
     os.environ['HTTP_X_APPENGINE_API_TICKET'] = flask.request.headers['X-Appengine-Api-Ticket']
-    os.environ['AUTH_DOMAIN'] = 'gmail.com'#flask.request.headers['X-Appengine-Auth-Domain']
+    os.environ['AUTH_DOMAIN'] = flask.request.environ['HTTP_X_APPENGINE_AUTH_DOMAIN']
+    os.environ['USER_ID'] = flask.request.environ['HTTP_X_APPENGINE_USER_ID']
+    os.environ['USER_EMAIL'] = flask.request.environ['HTTP_X_APPENGINE_USER_EMAIL']
     vmstub.VMStub.SetUseRequestSecurityTicketForThread(True)
     stub = vmstub.VMStub()
     vmstub.Register(stub)
